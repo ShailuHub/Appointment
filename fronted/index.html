@@ -11,9 +11,14 @@
     />
     <title>Appointment Data</title>
   </head>
-  <body>
-    <div class="container">
-      <form action="" id="form">
+  <body style="height: 100vh; width: 100%">
+    <div class="container d-flex justify-content-center mt-5">
+      <form
+        action="http://localhost:3000/add-user"
+        id="form"
+        style="width: 70%"
+        class="border p-3"
+      >
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input type="text" class="form-control" id="name" required />
@@ -24,7 +29,7 @@
         </div>
         <div class="mb-3">
           <label for="phone" class="form-label">Phone</label>
-          <input type="phone" class="form-control" id="phone" required />
+          <input type="tel" class="form-control" id="phone" required />
         </div>
         <div class="row mb-3">
           <div class="col">
@@ -34,6 +39,7 @@
               class="form-control"
               id="date"
               value="2023-04-20"
+              name="date"
               required
             />
           </div>
@@ -44,6 +50,7 @@
               class="form-control"
               id="time"
               value="10:00"
+              name="time"
               required
             />
           </div>

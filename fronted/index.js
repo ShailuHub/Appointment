@@ -14,9 +14,7 @@ form.addEventListener("submit", postData);
 function getAllData() {
   listItem.innerHTML = "";
   axios
-    .get(
-      "https://crudcrud.com/api/bb328aa144e149539ddbfdbc9e4553b4/appointment"
-    )
+    .get("http://localhost:3000/add-user")
     .then((res) => {
       const resDetail = res.data;
       resDetail.forEach((item) => {
@@ -34,9 +32,7 @@ getAllData();
 //Delete request
 function deletePost(postId) {
   axios
-    .delete(
-      `https://crudcrud.com/api/bb328aa144e149539ddbfdbc9e4553b4/appointment/${postId}`
-    )
+    .delete(`http://localhost:3000/delete-user/${postId}`)
     .then(() => {
       const rowToDelete = document.querySelector(`[data-item-id="${postId}"]`);
       if (rowToDelete) {
@@ -53,12 +49,9 @@ function deletePost(postId) {
 function editPost(postId) {
   deletePost(postId);
   axios
-    .get(
-      `https://crudcrud.com/api/bb328aa144e149539ddbfdbc9e4553b4/appointment/${postId}`
-    )
+    .get(`http://localhost:3000/edit-user/${postId}`)
     .then((res) => {
       // Set the form fields with the retrieved data
-      console.log(res.data);
       name.value = res.data.name;
       phone.value = res.data.phone;
       email.value = res.data.email;
@@ -75,10 +68,7 @@ function editPost(postId) {
 
       //Updating request
       axios
-        .patch(
-          `https://crudcrud.com/api/bb328aa144e149539ddbfdbc9e4553b4/appointment/${postId}`,
-          editItem
-        )
+        .patch(`http://localhost:3000/edit-user/${postId}`, editItem)
         .then((res) => {
           listItem.innerHTML = "";
           showData(res.data);
@@ -104,10 +94,7 @@ function postData(event) {
     phone: phone.value,
   };
   axios
-    .post(
-      "https://crudcrud.com/api/bb328aa144e149539ddbfdbc9e4553b4/appointment",
-      details
-    )
+    .post("http://localhost:3000/add-user", details)
     .then((res) => {
       listItem.innerHTML = "";
       getAllData();
@@ -121,7 +108,7 @@ function postData(event) {
 function showData(item) {
   const newItem = document.createElement("div");
   newItem.classList.add("row", "mb-2");
-  newItem.dataset.itemId = item._id;
+  newItem.dataset.itemId = item.id;
   newItem.innerHTML = ` 
     <div class="col-2">${item.name}</div>
     <div class="col-2">${item.email}</div>
@@ -139,32 +126,21 @@ function showData(item) {
   listItem.appendChild(newItem);
 }
 
-listItem.addEventListener("click", handleDeleteButton);
-listItem.addEventListener("click", handleEditButton);
-
-//Edit function
-
-function handleEditButton(event) {
-  editDeleteHelper(event);
-}
-
-//Delete funcion
-
-function handleDeleteButton(event) {
-  editDeleteHelper(event);
-}
-
-//Edit and delete helper function targeting the target
-function editDeleteHelper(event) {
+function handleButton(event) {
   const target = event.target;
   const parentRow = target.closest(".row");
   const itemId = getItemId(parentRow);
+
   if (target.classList.contains("btn-danger") && parentRow && itemId) {
+    console.log("delete");
     deletePost(itemId);
   } else if (target.classList.contains("btn-success") && parentRow && itemId) {
+    console.log("edit");
     editPost(itemId);
   }
 }
+
+listItem.addEventListener("click", handleButton);
 
 //getting paentRow
 function getItemId(parentRow) {
